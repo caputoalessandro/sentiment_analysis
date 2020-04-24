@@ -16,18 +16,18 @@ class Resources:
         resources = os.scandir(self.path + '/' + sentiment)
         return [resource.name for resource in resources]
 
-    def get_resource_words(self, sentiment, resource):
+    def get_words(self, sentiment, resource):
         resource = self.path + '/' + sentiment + '/' + resource
         f = open(resource, "r")
         words = f.read().splitlines()
         return [word for word in words]
 
     def count_word_occurrence(self, sentiment, resource, word):
-        words = self.get_resource_words(sentiment, resource)
+        words = self.get_words(sentiment, resource)
         return words.count(word)
 
     def count_word_percentage(self, sentiment, resource, word):
-        number_of_words = len(self.get_resource_words(sentiment, resource))
+        number_of_words = len(self.get_words(sentiment, resource))
         word_occurrence = self.count_word_occurrence(sentiment, resource, word)
         return word_occurrence / number_of_words * 100
 
