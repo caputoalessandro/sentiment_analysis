@@ -1,5 +1,5 @@
 import psycopg2
-from sample.dao.config import config
+from sample.config import config
 
 
 def postgres_connect():
@@ -19,4 +19,4 @@ def postgres_connect():
 
 
 if __name__ == '__main__':
-    connect()
+    postgres_connect()
