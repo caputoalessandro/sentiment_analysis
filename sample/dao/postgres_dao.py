@@ -5,10 +5,7 @@ from sample.dao.dao_abc import DAO
 
 
 class postgresDAO(DAO):
-
-    def __init__(self, db):
-        self.db = db
-
+    pass
 
 if __name__ == "__main__":
     pass
