@@ -1,13 +1,10 @@
 import psycopg2
 from sample.dao.postgres_dao import postgresDAO
-from sample.dao.postgres_connection import postgres_connection
+from sample.dao.postgres_connection import postgres_connect
 
 
-class get_dao():
-
-    def get(self, db):
-        if db == "postgres":
-            connection = postgres_connection()
-            db = connection
-            return db
+def get(self, db):
+    if db == "postgres":
+        db = postgres_connect()
+        return postgresDAO(db)
 
