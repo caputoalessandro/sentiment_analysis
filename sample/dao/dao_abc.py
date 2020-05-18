@@ -4,7 +4,7 @@ from abc import ABC, abstractmethod
 class DAO(ABC):
 
     @abstractmethod
-    def create_schema(self, schema : Sql):
+    def create_schema(self, schema):
         pass
 
     @abstractmethod
