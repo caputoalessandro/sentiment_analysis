@@ -1,5 +1,5 @@
 import psycopg2
-from sample.config import config
+from sample.db_managment.config import config
 
 
 def postgres_connect():
