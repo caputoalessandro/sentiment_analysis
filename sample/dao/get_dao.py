@@ -1,4 +1,4 @@
-from sample.postgres_connection import postgres_connect
+from sample.db_managment.postgres_connection import postgres_connect
 from sample.dao.postgres_dao import PostgresDAO
 
 

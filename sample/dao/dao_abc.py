@@ -1,13 +1,10 @@
-from typing import List
 from abc import ABC, abstractmethod
+from sample.resources.resources import Resources
 
 
 class DAO(ABC):
 
     @abstractmethod
-    def create_schema(self, schema):
+    def upload_words(self, resources: Resources):
         pass
 
-    @abstractmethod
-    def insert_words(self, resources : List[str]):
-        pass
