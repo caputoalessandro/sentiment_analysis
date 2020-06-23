@@ -1,1 +1,1 @@
-from sample.resources.lexical_resources import LexicalResources
+from sample.resources.resources import Resources

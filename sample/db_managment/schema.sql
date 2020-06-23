@@ -11,11 +11,11 @@ CREATE TABLE words (
 DROP TABLE IF EXISTS scores;
 CREATE TABLE  scores (
     word varchar,
-    value varchar,
-    type varchar,
-    resource varchar,
+    word_value varchar,
+    resource_type varchar,
+    resource_name varchar,
     occurences int,
-    PRIMARY KEY (word, value,  type, resource)
+    PRIMARY KEY (word, word_value, resource_type , resource_name)
 );
 
 

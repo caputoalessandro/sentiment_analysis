@@ -1,7 +1,7 @@
 from pathlib import Path
 
 
-class LexicalResources:
+class Resources:
 
     def __init__(self, path):
         self.path = Path(path)
@@ -16,12 +16,12 @@ class LexicalResources:
         words = f.read().splitlines()
         return { word.split()[0]: word.split()[1] for word in words}
 
-    def get_lexical_resources_records(self):
+    def get_word_records(self):
 
         return [
             {
                 "word": word,
-                "value": sentiment.name,
+                "sentiment": sentiment.name,
                 "resource": resource.stem
             }
             for sentiment in self.path.iterdir()
@@ -29,14 +29,28 @@ class LexicalResources:
             for word in self.__get_words__(resource) if "_" not in word
         ]
 
-    def get_conscore_resources_records(self):
+    def get_posneg_records(self):
 
         return [
             {
                 "word": word,
-                "value": value,
-                "type": type.name,
-                "resource": resource.stem
+                "word_value": sign.name,
+                "resource_type": "posneg",
+                "resource_name": resource.stem
+            }
+            for sign in self.path.iterdir()
+            for resource in sign.iterdir()
+            for word in self.__get_words__(resource) if "_" not in word
+        ]
+
+    def get_conscore_records(self):
+
+        return [
+            {
+                "word": word,
+                "word_value": value,
+                "resource_type": type.name,
+                "resource_name": resource.stem
             }
             for type in self.path.iterdir()
             for resource in type.iterdir()
@@ -46,5 +60,4 @@ class LexicalResources:
 
 if __name__ == "__main__":
     PATH = "../../data/input/numeric_resources"
-    file = LexicalResources(PATH)
-    print(file.get_conscore_resources_records())
+    file = Resources(PATH)
