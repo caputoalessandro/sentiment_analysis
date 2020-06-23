@@ -1,38 +1,50 @@
-import os
+from pathlib import Path
 
 
 class LexicalResources:
 
     def __init__(self, path):
-        self.path = path
+        self.path = Path(path)
 
-    def get_sentiments(self):
-        sentiments = os.scandir(self.path)
-        return [sentiment for sentiment in sentiments]
-
-    def get_resources(self, sentiment):
-        resources = os.scandir(sentiment.path)
-        return [resource for resource in resources]
-
-    def get_words(self, resource):
-        f = open(resource.path, "r")
+    def __get_words__(self, resource):
+        f = open(resource, "r")
         words = f.read().splitlines()
         return [word for word in words]
 
-    def get_records(self):
+    def __get_scores__(self, resource):
+        f = open(resource, "r")
+        words = f.read().splitlines()
+        return { word.split()[0]: word.split()[1] for word in words}
+
+    def get_lexical_resources_records(self):
 
         return [
             {
                 "word": word,
-                "sentiment": sentiment.name,
-                "resource": resource.name[:-4]
+                "value": sentiment.name,
+                "resource": resource.stem
             }
-            for sentiment in self.get_sentiments()
-            for resource in self.get_resources(sentiment)
-            for word in self.get_words(resource)
+            for sentiment in self.path.iterdir()
+            for resource in sentiment.iterdir()
+            for word in self.__get_words__(resource) if "_" not in word
+        ]
+
+    def get_numerical_resources_records(self):
+
+        return [
+            {
+                "word": word,
+                "value": value,
+                "type": type.name,
+                "resource": resource.stem
+            }
+            for type in self.path.iterdir()
+            for resource in type.iterdir()
+            for word, value in self.__get_scores__(resource).items() if "_" not in word
         ]
 
 
 if __name__ == "__main__":
-    PATH = "../data/output/modified_lexical_resources/"
+    PATH = "../../data/input/numeric_resources"
     file = LexicalResources(PATH)
+    print(file.get_numerical_resources_records())

@@ -7,6 +7,18 @@ CREATE TABLE words (
     PRIMARY KEY (word, sentiment, resource)
 );
 
+
+DROP TABLE IF EXISTS scores;
+CREATE TABLE  scores (
+    word varchar,
+    value varchar,
+    type varchar,
+    resource varchar,
+    occurences int,
+    PRIMARY KEY (word, value,  type, resource)
+);
+
+
 DROP TABLE IF EXISTS tweets;
 CREATE TABLE tweets (
     id SERIAL PRIMARY KEY,

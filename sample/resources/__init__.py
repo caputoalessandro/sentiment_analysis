@@ -1,2 +1,1 @@
 from sample.resources.lexical_resources import LexicalResources
-from sample.resources.create_new_resource import create_new_lexical_resources
