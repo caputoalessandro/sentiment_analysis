@@ -5,7 +5,7 @@ CREATE TABLE words (
     resource varchar,
     occurences int,
     PRIMARY KEY (word, sentiment, resource)
-)
+);
 
 DROP TABLE IF EXISTS tweets;
 CREATE TABLE tweets (

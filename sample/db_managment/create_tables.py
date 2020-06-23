@@ -27,6 +27,6 @@ def create_tables(schema):
             print("PostgreSQL connection is closed")
 
 
-if  __name__  == "__main__":
+if __name__ == "__main__":
     sql_file = 'schema.sql'
     create_tables(sql_file)

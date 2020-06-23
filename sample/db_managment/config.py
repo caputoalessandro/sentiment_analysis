@@ -1,7 +1,7 @@
 from configparser import ConfigParser
 
 
-def config(filename='../config/postgres.ini', section='postgresql'):
+def config(filename='/home/sinopeta/PyCharm-Projects/MAADB/sentiment_analysis/config/postgres.ini', section='postgresql'):
     # create a parser
     parser = ConfigParser()
     # read config file
