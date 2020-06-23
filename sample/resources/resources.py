@@ -29,7 +29,7 @@ class LexicalResources:
             for word in self.__get_words__(resource) if "_" not in word
         ]
 
-    def get_numerical_resources_records(self):
+    def get_conscore_resources_records(self):
 
         return [
             {
@@ -47,4 +47,4 @@ class LexicalResources:
 if __name__ == "__main__":
     PATH = "../../data/input/numeric_resources"
     file = LexicalResources(PATH)
-    print(file.get_numerical_resources_records())
+    print(file.get_conscore_resources_records())
