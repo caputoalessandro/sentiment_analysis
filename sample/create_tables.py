@@ -1,9 +1,8 @@
 import psycopg2
-from psycopg2 import Error
 from sample.db_managment.postgres_connection import postgres_connect
 
 
-def create_tables(schema):
+def create_tables(schema= 'db_managment/schema.sql'):
     try:
         connection = postgres_connect()
 
@@ -25,8 +24,3 @@ def create_tables(schema):
             cursor.close()
             connection.close()
             print("PostgreSQL connection is closed")
-
-
-if __name__ == "__main__":
-    sql_file = 'schema.sql'
-    create_tables(sql_file)

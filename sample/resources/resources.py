@@ -57,7 +57,3 @@ class Resources:
             for word, value in self.__get_scores__(resource).items() if "_" not in word
         ]
 
-
-if __name__ == "__main__":
-    PATH = "../../data/input/numeric_resources"
-    file = Resources(PATH)
