@@ -7,6 +7,7 @@ def nltk_init():
         "universal_tagset",
         "averaged_perceptron_tagger",
         "stopwords",
+        'twitter_samples'
     ]:
         nltk.download(corpus)
 

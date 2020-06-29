@@ -9,12 +9,11 @@ def twitter_processing(twitters_path):
     processor = TwitterProcessor()
 
     with twitters.open() as file:
-        for line in file:
+        for line in file.read().splitlines():
             tweet = processor.process_tweet(line, twitters.name[11:-8])
-            breakpoint()
 
 
 if __name__ == "__main__":
     # nltk_init()
-    path = "data/input/messages/prova.txt"
+    path = "data/input/messages/dataset_dt_anger_60k.txt"
     twitter_processing(path)
