@@ -48,17 +48,14 @@ class TwitterProcessor:
         self.stemmer = PorterStemmer()
         self.slang_to_tokens = slang_to_tokens_map()
 
-
     def process_tweet(self, message, sentiment):
 
         hashtags = []
         themes = []
 
-        # tokens = message.split()
         tokens = self.tokenizer.tokenize(message)
         tokens = self._expand_slang(tokens)
         tagged_tokens = self.tagger.tag(tokens)
-        # breakpoint()
         stemmer = self.stemmer
 
         ideograms = self._find_ideograms(message)
