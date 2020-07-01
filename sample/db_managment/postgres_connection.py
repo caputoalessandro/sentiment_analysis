@@ -7,7 +7,7 @@ def postgres_connect():
     conn = None
     try:
         # read connection parameters
-        params = config()
+        params = config("postgres")
 
         # connect to the PostgreSQL server
         conn = psycopg2.connect(**params)

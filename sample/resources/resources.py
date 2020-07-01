@@ -56,4 +56,3 @@ class Resources:
             for resource in type.iterdir()
             for word, value in self.__get_scores__(resource).items() if "_" not in word
         ]
-

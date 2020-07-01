@@ -2,7 +2,7 @@ import psycopg2
 from sample.db_managment.postgres_connection import postgres_connect
 
 
-def create_tables(schema= 'db_managment/schema.sql'):
+def create_tables(schema='db_managment/schema.sql'):
     try:
         connection = postgres_connect()
 

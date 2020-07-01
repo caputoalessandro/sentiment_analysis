@@ -2,7 +2,7 @@ from sample.processing.twitter_processor import TwitterProcessor
 from pathlib import Path
 
 
-def twitter_processing(directory):
+def process_tweets(directory="/home/sinopeta/Google Drive/Pycharm Projects/MAADB/sentiment_analysis/data/input/prova"):
 
     directory = Path(directory)
     processor = TwitterProcessor()
@@ -13,8 +13,3 @@ def twitter_processing(directory):
                 processor.process_tweet(line, resource.name[11:-8])
                 for line in file.read().splitlines()
             ]
-
-
-if __name__ == "__main__":
-    path = "data/input/prova"
-    print(twitter_processing(path))

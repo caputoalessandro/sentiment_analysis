@@ -1,7 +1,16 @@
 from configparser import ConfigParser
 
 
-def config(filename='/home/sinopeta/Google Drive/Pycharm Projects/MAADB/sentiment_analysis/config/postgres.ini', section='postgresql'):
+def config(db):
+
+    if db == "postgres":
+        filename = '/home/sinopeta/Google Drive/Pycharm Projects/MAADB/sentiment_analysis/config/postgres.ini'
+        section = 'postgresql'
+
+    elif db == "mongo":
+        filename = '/home/sinopeta/Google Drive/Pycharm Projects/MAADB/sentiment_analysis/config/mongo.ini'
+        section = 'mongo'
+
     # create a parser
     parser = ConfigParser()
     # read config file

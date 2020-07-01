@@ -1,20 +1,27 @@
 from sample.create_tables import create_tables
-from sample.upload_resources import upload_resources
-from sample.twitter_processing import twitter_processing
+from sample.upload_resources import postgres_upload_resources,mongo_upload_resources
+from sample.process_tweets import process_tweets
 from sample.dao.get_dao import get_db
+
+POSTGRES = "postgres"
+MONGO_DB = "mongo"
 
 
 def main():
 
     create_tables()
 
-    upload_resources()
+    postgres_upload_resources()
 
-    tweets_path = "/home/sinopeta/Google Drive/Pycharm Projects/MAADB/sentiment_analysis/data/input/prova"
-    twitter_list = twitter_processing(tweets_path)
+    mongo_upload_resources()
 
-    postgres = get_db("postgres")
-    postgres.upload_tweets(twitter_list)
+    processed_tweets = process_tweets()
+
+    pg = get_db(POSTGRES)
+    pg.upload_tweets(processed_tweets)
+
+    mongo = get_db(MONGO_DB)
+    mongo.upload_tweets(processed_tweets)
 
 
 if __name__ == "__main__":
