@@ -15,7 +15,12 @@ class MongoDAO(DAO):
         db = self.db.maadb_project
         words = db.words
         word_to_insert = resources.get_word_records()
-        words.insert_many(word_to_insert)
+        if words.insert_many(word_to_insert):
+            print("Word Documents inserted successfully")
+            self.db.close()
+        else:
+            self.db.close()
+            print("INSERIMENTO FALLITO")
 
     def upload_words_values(self, resources: Resources, type):
 
@@ -28,9 +33,19 @@ class MongoDAO(DAO):
 
         db = self.db.maadb_project
         scores = db.scores
-        scores.insert_many(word_to_insert)
+        if scores.insert_many(word_to_insert):
+            print(type + "Documents inserted successfully")
+            self.db.close()
+        else:
+            self.db.close()
+            print("INSERIMENTO FALLITO")
 
     def upload_tweets(self, tweets: List[TweetData]):
         db = self.db.maadb_project
         tweets_collection = db.tweets
-        tweets_collection.insert_many(map(asdict, tweets))
+        if tweets_collection.insert_many(map(asdict, tweets)):
+            print("Tweets Documents inserted successfully")
+            self.db.close()
+        else:
+            self.db.close()
+            print("INSERIMENTO FALLITO")

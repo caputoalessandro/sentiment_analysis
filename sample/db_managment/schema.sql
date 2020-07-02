@@ -19,7 +19,7 @@ CREATE TABLE  scores (
 );
 
 
-DROP TABLE IF EXISTS tweets;
+DROP TABLE IF EXISTS tweets CASCADE;
 CREATE TABLE tweets (
     id SERIAL PRIMARY KEY,
     text VARCHAR,
@@ -32,3 +32,15 @@ CREATE TABLE tweets (
     emoticon_pos VARCHAR [],
     emoticon_neg VARCHAR []
 );
+
+
+DROP MATERIALIZED VIEW IF EXISTS tweet_word_frequencies;
+CREATE MATERIALIZED VIEW tweet_word_frequencies
+AS
+    SELECT sentiment, lemma, COUNT(lemma) as lemma_count
+    FROM tweets, LATERAL unnest(lemmas) as lemma
+    GROUP BY sentiment, lemma
+    ORDER BY lemma_count DESC
+WITH NO DATA;
+
+-- REFRESH MATERIALIZED VIEW tweet_word_frequencies;

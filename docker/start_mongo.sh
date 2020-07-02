@@ -10,6 +10,3 @@
 #  --publish 27017:27017 \
 #  -d \
 #  mongo
-
-systemctl start docker
-sudo docker start maadb-mongo
