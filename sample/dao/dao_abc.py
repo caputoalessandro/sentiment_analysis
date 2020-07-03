@@ -18,5 +18,8 @@ class DAO(ABC):
     def upload_tweets(self, tweets: List[TweetData]):
         pass
 
+    @abstractmethod
+    def map_reduce(self):
+        pass
 
 

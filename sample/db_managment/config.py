@@ -4,11 +4,11 @@ from configparser import ConfigParser
 def config(db):
 
     if db == "postgres":
-        filename = '/home/sinopeta/Google Drive/Pycharm Projects/MAADB/sentiment_analysis/config/postgres.ini'
+        filename = '/home/sinopeta/Google_Drive/Pycharm Projects/MAADB/sentiment_analysis/config/postgres.ini'
         section = 'postgresql'
 
     elif db == "mongo":
-        filename = '/home/sinopeta/Google Drive/Pycharm Projects/MAADB/sentiment_analysis/config/mongo.ini'
+        filename = '/home/sinopeta/Google_Drive/Pycharm Projects/MAADB/sentiment_analysis/config/mongo.ini'
         section = 'mongo'
 
     # create a parser

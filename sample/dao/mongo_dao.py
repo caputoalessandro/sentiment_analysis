@@ -3,6 +3,7 @@ from sample.resources.resources import Resources
 from sample.processing.twitter_processor import TweetData
 from typing import List
 from dataclasses import asdict
+from bson.code import Code
 
 
 class MongoDAO(DAO):
@@ -14,6 +15,7 @@ class MongoDAO(DAO):
 
         db = self.db.maadb_project
         words = db.words
+        words.drop()
         word_to_insert = resources.get_word_records()
         if words.insert_many(word_to_insert):
             print("Word Documents inserted successfully")
@@ -33,6 +35,7 @@ class MongoDAO(DAO):
 
         db = self.db.maadb_project
         scores = db.scores
+        scores.drop()
         if scores.insert_many(word_to_insert):
             print(type + "Documents inserted successfully")
             self.db.close()
@@ -43,9 +46,32 @@ class MongoDAO(DAO):
     def upload_tweets(self, tweets: List[TweetData]):
         db = self.db.maadb_project
         tweets_collection = db.tweets
+        tweets_collection.drop()
         if tweets_collection.insert_many(map(asdict, tweets)):
             print("Tweets Documents inserted successfully")
             self.db.close()
         else:
             self.db.close()
             print("INSERIMENTO FALLITO")
+
+    def map_reduce(self):
+
+        map = Code("""
+                   function () {
+                     this.themes.forEach(function(z) {
+                       emit(z, 1);
+                     });
+                   }
+                   """)
+
+        reduce = Code("""
+                function (key, values) {
+                    var total = 0;
+                    for (var i = 0; i < values.length; i++) {
+                        total += values[i];
+                    }
+                    return total;
+                }"""
+                      )
+
+        return self.db.maadb_project.tweets.map_reduce(map, reduce, "risultato")

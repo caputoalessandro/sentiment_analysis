@@ -9,20 +9,24 @@ MONGO_DB = "mongo"
 
 def main():
 
-    create_tables()
+    # processed_tweets = process_tweets()
 
-    postgres_upload_resources()
+    # create_tables()
+    #
+    # postgres_upload_resources()
 
-    mongo_upload_resources()
+    # pg = get_db(POSTGRES)
+    # pg.upload_tweets(processed_tweets)
 
-    processed_tweets = process_tweets()
-
-    pg = get_db(POSTGRES)
-    pg.upload_tweets(processed_tweets)
-
+    # mongo_upload_resources()
+    #
     mongo = get_db(MONGO_DB)
-    mongo.upload_tweets(processed_tweets)
+    # mongo.upload_tweets(processed_tweets)
 
+    result = mongo.map_reduce()
+
+    for doc in result.find():
+        print(doc)
 
 if __name__ == "__main__":
     main()

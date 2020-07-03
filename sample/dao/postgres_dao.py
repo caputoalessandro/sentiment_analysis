@@ -41,7 +41,7 @@ class PostgresDAO(DAO):
             if self.db:
                 cursor.close()
                 self.db.close()
-                print("PostgreSQL self.db is closed")
+                # print("PostgreSQL self.db is closed")
 
     def upload_words_values(self, resources: Resources, type):
         try:
@@ -80,7 +80,7 @@ class PostgresDAO(DAO):
             if self.db:
                 cursor.close()
                 self.db.close()
-                print("PostgreSQL self.db is closed")
+                # print("PostgreSQL self.db is closed")
 
     def upload_tweets(self, tweets: List[TweetData]):
         try:
@@ -106,4 +106,4 @@ class PostgresDAO(DAO):
             if self.db:
                 cursor.close()
                 self.db.close()
-                print("PostgreSQL self.db is closed")
+                # print("PostgreSQL self.db is closed")
