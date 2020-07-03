@@ -54,7 +54,8 @@ class MongoDAO(DAO):
             self.db.close()
             print("INSERIMENTO FALLITO")
 
-    def map_reduce(self):
+
+    def count_tweet_lemmas_frequencies(self, sentiment):
 
         map = Code("""
                    function () {
@@ -65,13 +66,19 @@ class MongoDAO(DAO):
                    """)
 
         reduce = Code("""
-                function (key, values) {
-                    var total = 0;
-                    for (var i = 0; i < values.length; i++) {
-                        total += values[i];
-                    }
-                    return total;
-                }"""
+                      function (key, values) {
+                          var total = 0;
+                          for (var i = 0; i < values.length; i++) {
+                              total += values[i];
+                          }
+                          return total;
+                      }"""
                       )
 
-        return self.db.maadb_project.tweets.map_reduce(map, reduce, "risultato")
+        self.db.maadb_project.risultato.drop()
+
+        return self.db.maadb_project.tweets.map_reduce(
+            map,
+            reduce,
+            f"{sentiment}_freqs",
+            query={"sentiment": sentiment})

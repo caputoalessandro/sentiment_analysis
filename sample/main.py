@@ -9,7 +9,7 @@ MONGO_DB = "mongo"
 
 def main():
 
-    # processed_tweets = process_tweets()
+    processed_tweets = process_tweets()
 
     # create_tables()
     #
@@ -17,16 +17,14 @@ def main():
 
     # pg = get_db(POSTGRES)
     # pg.upload_tweets(processed_tweets)
-
+    #
     # mongo_upload_resources()
     #
     mongo = get_db(MONGO_DB)
     # mongo.upload_tweets(processed_tweets)
 
-    result = mongo.map_reduce()
+    result = mongo.count_tweet_lemmas_frequencies("anger")
 
-    for doc in result.find():
-        print(doc)
 
 if __name__ == "__main__":
     main()

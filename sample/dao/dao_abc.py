@@ -19,7 +19,7 @@ class DAO(ABC):
         pass
 
     @abstractmethod
-    def map_reduce(self):
+    def count_tweet_lemmas_frequencies(self, sentiment):
         pass
 
 
