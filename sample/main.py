@@ -12,18 +12,20 @@ def main():
     processed_tweets = process_tweets()
 
     # create_tables()
-    #
     # postgres_upload_resources()
-
-    # pg = get_db(POSTGRES)
+    pg = get_db(POSTGRES)
     # pg.upload_tweets(processed_tweets)
-    #
-    # mongo_upload_resources()
-    #
-    mongo = get_db(MONGO_DB)
-    # mongo.upload_tweets(processed_tweets)
+    # pg.refresh_materialized_view()
+    postgres_filtered = pg.get_filtered_frequencies()
 
-    result = mongo.count_tweet_lemmas_frequencies("anger")
+    # mongo_upload_resources()
+    # mongo = get_db(MONGO_DB)
+    # mongo.upload_tweets(processed_tweets)
+    # mongo.count_tweet_lemmas_frequencies()
+
+    # filtered = mongo.get_filtered_frequencies()
+
+
 
 
 if __name__ == "__main__":

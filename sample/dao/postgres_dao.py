@@ -107,3 +107,51 @@ class PostgresDAO(DAO):
                 cursor.close()
                 self.db.close()
                 # print("PostgreSQL self.db is closed")
+
+    def get_filtered_frequencies(self):
+        try:
+            cursor = self.db.cursor()
+
+            sql_insert_query = """
+                   SELECT * 
+                   FROM tweet_word_frequencies 
+                   LIMIT 80     
+                   """
+
+            cursor.execute(sql_insert_query)
+            records = cursor.fetchall()
+            self.db.commit()
+            print(cursor.rowcount, "Record inserted successfully into mobile table")
+
+        except (Exception, psycopg2.Error) as error:
+            print("Failed selecting record into mobile table {}".format(error))
+
+        finally:
+            # closing database self.db.
+            if self.db:
+                cursor.close()
+                self.db.close()
+                return records
+                # print("PostgreSQL self.db is closed")
+
+    def refresh_materialized_view(self):
+        try:
+            cursor = self.db.cursor()
+
+            sql_insert_query = """
+                   REFRESH MATERIALIZED VIEW tweet_word_frequencies
+                   """
+
+            cursor.execute(sql_insert_query)
+            self.db.commit()
+            print("materialized view refreshed")
+
+        except (Exception, psycopg2.Error) as error:
+            print("refreshing failed".format(error))
+
+        finally:
+            # closing database self.db.
+            if self.db:
+                cursor.close()
+                self.db.close()
+                # print("PostgreSQL self.db is closed")

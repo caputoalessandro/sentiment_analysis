@@ -1,15 +1,20 @@
 from sample.processing.twitter_processor import TwitterProcessor
-from pathlib import Path
+from pathlib import Path,PurePath
 
 
-def process_tweets(directory="/home/sinopeta/Google_Drive/Pycharm Projects/MAADB/sentiment_analysis/data/input/messages/dataset_dt_anger_60k.txt"):
+def process_tweets(directory="/home/sinopeta/Google_Drive/Pycharm Projects/MAADB/sentiment_analysis/data/input/messages-prova"):
 
     directory = Path(directory)
     processor = TwitterProcessor()
+    result = []
 
-    # for resource in directory.iterdir():
-    with directory.open() as file:
-        return [
-            processor.process_tweet(line, directory.name[11:-8])
-            for line in file.read().splitlines()
-        ]
+    for sentiment in directory.iterdir():
+        with sentiment.open() as file:
+            tweets = [
+                processor.process_tweet(line, PurePath(sentiment).name[11:-8])
+                for line in file.read().splitlines()
+            ]
+
+        result = result + tweets
+
+    return result

@@ -9,6 +9,16 @@ from bson.code import Code
 class MongoDAO(DAO):
 
     def __init__(self, db):
+        self.sentiments = [
+            "anger",
+            "anticipation",
+            "disgust",
+            "fear",
+            "joy",
+            "sadness",
+            "surprise",
+            "trust"
+        ]
         self.db = db
 
     def upload_words(self, resources: Resources):
@@ -54,8 +64,12 @@ class MongoDAO(DAO):
             self.db.close()
             print("INSERIMENTO FALLITO")
 
+    def _count_tweet_lemmas_frequencies(self):
 
-    def count_tweet_lemmas_frequencies(self, sentiment):
+        for sentiment in self.sentiments:
+            self._map_reduce(sentiment)
+
+    def _map_reduce(self, sentiment):
 
         map = Code("""
                    function () {
@@ -75,6 +89,7 @@ class MongoDAO(DAO):
                       }"""
                       )
 
+
         self.db.maadb_project.risultato.drop()
 
         return self.db.maadb_project.tweets.map_reduce(
@@ -82,3 +97,13 @@ class MongoDAO(DAO):
             reduce,
             f"{sentiment}_freqs",
             query={"sentiment": sentiment})
+
+    def get_filtered_frequencies(self):
+        frequencies = {}
+        for sentiment in self.sentiments:
+            collection = self.db.maadb_project[f"{sentiment}_freqs"]
+            aggregate  = collection.find({}).sort('value', -1).limit(10)
+            frequencies.setdefault(sentiment)
+            frequencies[sentiment] = list(aggregate)
+
+        return frequencies

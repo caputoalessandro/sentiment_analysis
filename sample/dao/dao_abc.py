@@ -19,7 +19,5 @@ class DAO(ABC):
         pass
 
     @abstractmethod
-    def count_tweet_lemmas_frequencies(self, sentiment):
+    def get_filtered_frequencies(self):
         pass
-
-
