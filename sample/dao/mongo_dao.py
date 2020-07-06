@@ -102,7 +102,7 @@ class MongoDAO(DAO):
         frequencies = {}
         for sentiment in self.sentiments:
             collection = self.db.maadb_project[f"{sentiment}_freqs"]
-            aggregate  = collection.find({}).sort('value', -1).limit(10)
+            aggregate  = collection.find({}).sort('value', -1).limit(40)
             frequencies.setdefault(sentiment)
             frequencies[sentiment] = list(aggregate)
 
