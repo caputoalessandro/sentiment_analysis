@@ -19,5 +19,5 @@ class DAO(ABC):
         pass
 
     @abstractmethod
-    def get_filtered_frequencies(self):
+    def get_filtered_lemmas(self):
         pass

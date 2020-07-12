@@ -89,7 +89,6 @@ class MongoDAO(DAO):
                       }"""
                       )
 
-
         self.db.maadb_project.risultato.drop()
 
         return self.db.maadb_project.tweets.map_reduce(
@@ -98,7 +97,7 @@ class MongoDAO(DAO):
             f"{sentiment}_freqs",
             query={"sentiment": sentiment})
 
-    def get_filtered_frequencies(self):
+    def get_filtered_lemmas(self):
         frequencies = {}
         for sentiment in self.sentiments:
             collection = self.db.maadb_project[f"{sentiment}_freqs"]

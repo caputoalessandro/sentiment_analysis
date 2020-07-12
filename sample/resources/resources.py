@@ -22,7 +22,8 @@ class Resources:
             {
                 "word": word,
                 "sentiment": sentiment.name,
-                "resource": resource.stem
+                "resource": resource.stem,
+                "occurences": self.count_frequencies(word,sentiment)
             }
             for sentiment in self.path.iterdir()
             for resource in sentiment.iterdir()
@@ -56,3 +57,13 @@ class Resources:
             for resource in type.iterdir()
             for word, value in self.__get_scores__(resource).items() if "_" not in word
         ]
+
+    def count_frequencies(self, word, sentiment):
+        result = 0
+
+
+        for resource in sentiment.iterdir():
+            words = self.__get_words__(resource)
+            result = result + words.count(word)
+
+        return result

@@ -1,21 +1,23 @@
 DROP TABLE IF EXISTS words;
 CREATE TABLE words (
+    id  SERIAL PRIMARY KEY,
     word varchar,
     sentiment varchar,
     resource varchar,
-    occurences int,
-    PRIMARY KEY (word, sentiment, resource)
+    occurences int
+--     PRIMARY KEY (word, sentiment, resource)
 );
 
 
 DROP TABLE IF EXISTS scores;
 CREATE TABLE  scores (
+    id  SERIAL PRIMARY KEY,
     word varchar,
     word_value varchar,
     resource_type varchar,
     resource_name varchar,
-    occurences int,
-    PRIMARY KEY (word, word_value, resource_type , resource_name)
+    occurences int
+--     PRIMARY KEY (word, word_value, resource_type , resource_name)
 );
 
 
