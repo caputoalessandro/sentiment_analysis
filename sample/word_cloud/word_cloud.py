@@ -1,7 +1,7 @@
 from wordcloud import WordCloud, STOPWORDS
 import matplotlib.pyplot as plt
 import pandas as pd
-from typing import Dict,List
+from typing import Dict, List
 
 
 def make_wordcloud(words):

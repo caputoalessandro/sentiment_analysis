@@ -109,19 +109,23 @@ class PostgresDAO(DAO):
                 # print("PostgreSQL self.db is closed")
 
     def get_filtered_frequencies(self):
+
+        records = None
+
         try:
             cursor = self.db.cursor()
 
             sql_insert_query = """
                    SELECT * 
                    FROM tweet_word_frequencies 
-                   LIMIT 80     
+                   ORDER BY sentiment, lemma_count DESC;
                    """
 
             cursor.execute(sql_insert_query)
             records = cursor.fetchall()
+
             self.db.commit()
-            print(cursor.rowcount, "Record inserted successfully into mobile table")
+
 
         except (Exception, psycopg2.Error) as error:
             print("Failed selecting record into mobile table {}".format(error))
@@ -131,8 +135,8 @@ class PostgresDAO(DAO):
             if self.db:
                 cursor.close()
                 self.db.close()
-                return records
-                # print("PostgreSQL self.db is closed")
+
+        return records
 
     def refresh_materialized_view(self):
         try:
