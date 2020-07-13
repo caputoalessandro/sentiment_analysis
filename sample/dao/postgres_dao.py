@@ -18,20 +18,17 @@ class PostgresDAO(DAO):
             records = resources.get_word_records()
 
             sql_insert_query = """ INSERT INTO words (word, sentiment, resource, occurences) 
-                                   VALUES (%(word)s, %(sentiment)s, %(resource)s, %(occurences)s) 
-                                   """
-
-            """
-            ON CONFLICT (word, sentiment, resource) DO UPDATE 
+                                   VALUES (%(word)s, %(sentiment)s, %(resource)s, 1) 
+                                   ON CONFLICT (word, sentiment, resource) DO UPDATE 
                                    SET occurences = words.occurences + 1 
                                    WHERE 1 = 1
                                    AND words.word = %(word)s
                                    AND words.sentiment = %(sentiment)s
                                    AND words.resource = %(resource)s
-            """
+                                    """
 
             # executemany() to insert multiple rows rows
-            result = cursor.executemany(sql_insert_query, records)
+            cursor.executemany(sql_insert_query, records)
             self.db.commit()
             print(cursor.rowcount, "Record inserted successfully into mobile table")
 
@@ -48,11 +45,13 @@ class PostgresDAO(DAO):
     def upload_words_values(self, resources: Resources, type):
         try:
             cursor = self.db.cursor()
+            records = []
 
             if type == "posneg":
                 records = resources.get_posneg_records()
             elif type == "conscore":
                 records = resources.get_conscore_records()
+
             else:
                 print("specifica tipo di risorsa, posneg o conscor")
 
@@ -68,7 +67,7 @@ class PostgresDAO(DAO):
                                    """
 
             # executemany() to insert multiple rows rows
-            result = cursor.executemany(sql_insert_query, records)
+            cursor.executemany(sql_insert_query, records)
             self.db.commit()
             print(cursor.rowcount, "Record inserted successfully into mobile table")
 
