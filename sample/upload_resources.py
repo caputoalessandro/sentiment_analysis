@@ -19,8 +19,6 @@ POSNEG = "posneg"
 
 def postgres_upload_resources():
 
-    conscore_resources.__write_freq__()
-
     postg = get_db(POTGRES)
     postg.upload_words(lexical_resources)
 

@@ -3,7 +3,7 @@ from sample.upload_resources import postgres_upload_resources, mongo_upload_reso
 from sample.process_tweets import process_tweets
 from sample.dao.get_dao import get_db
 from sample.word_clouds import make_all_word_clouds
-
+from sample.update_resources import update_resources
 
 POSTGRES = "postgres"
 MONGO_DB = "mongo"
@@ -15,19 +15,14 @@ def main():
     # processed_tweets = process_tweets()
 
     """ Upload resources on Postgres """
-    create_tables()
-    postgres_upload_resources()
-
+    # create_tables()
+    # postgres_upload_resources()
+    #
     # pg = get_db(POSTGRES)
     # pg.upload_tweets(processed_tweets)
     #
     # pg = get_db(POSTGRES)
     # pg.refresh_materialized_view()
-
-    """ Make wordclouds on postgres """
-    # pg = get_db(POSTGRES)
-    # postgres_filtered = pg.get_filtered_lemmas()
-    # make_all_word_clouds(postgres_filtered, POSTGRES)
 
     """ Upload resources on Mongo DB """
     # mongo = get_db(MONGO_DB)
@@ -38,6 +33,15 @@ def main():
 
     # mongo = get_db(MONGO_DB)
     # mongo.count_tweet_lemmas_frequencies()
+
+    """ Update resources, update frequency or add new word """
+    update_resources(POSTGRES)
+    # update_resources(MONGO_DB)
+
+    """ Make wordclouds on postgres """
+    # pg = get_db(POSTGRES)
+    # postgres_filtered = pg.get_filtered_lemmas()
+    # make_all_word_clouds(postgres_filtered, POSTGRES)
 
     """ Make word clouds on Mongo DB"""
     # mongo = get_db(MONGO_DB)

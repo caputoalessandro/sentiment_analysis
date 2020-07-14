@@ -58,7 +58,6 @@ class Resources:
                 "word_value": value,
                 "resource_type": type.name,
                 "resource_name": resource.stem,
-                "occurences": self.count_conscore_frequencies(word)
             }
             for type in self.path.iterdir()
             for resource in type.iterdir()

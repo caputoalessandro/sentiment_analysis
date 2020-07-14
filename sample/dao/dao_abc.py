@@ -21,3 +21,16 @@ class DAO(ABC):
     @abstractmethod
     def get_filtered_lemmas(self):
         pass
+
+    @abstractmethod
+    def update_frequency_on_resources(self, word, sentiment, frequency):
+        pass
+
+    @abstractmethod
+    def add_word(self, row):
+        pass
+
+    @abstractmethod
+    def get_words(self):
+        pass
+

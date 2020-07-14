@@ -17,6 +17,7 @@ def create_tables(schema='db_managment/schema.sql'):
         print("Table created successfully in PostgreSQL ")
 
     except (Exception, psycopg2.DatabaseError) as error:
+        connection.rollback()
         print("Error while creating PostgreSQL table", error)
     finally:
         # closing database connection.

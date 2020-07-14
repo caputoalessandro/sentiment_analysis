@@ -17,8 +17,8 @@ class PostgresDAO(DAO):
 
             records = resources.get_word_records()
 
-            sql_insert_query = """ INSERT INTO words (word, sentiment, resource, occurences) 
-                                   VALUES (%(word)s, %(sentiment)s, %(resource)s, 1) 
+            sql_insert_query = """ INSERT INTO words (word, sentiment, resource, occurences, tweet_freq) 
+                                   VALUES (%(word)s, %(sentiment)s, %(resource)s, 1,0) 
                                    ON CONFLICT (word, sentiment, resource) DO UPDATE 
                                    SET occurences = words.occurences + 1 
                                    WHERE 1 = 1
@@ -33,6 +33,7 @@ class PostgresDAO(DAO):
             print(cursor.rowcount, "Record inserted successfully into mobile table")
 
         except (Exception, psycopg2.Error) as error:
+            self.db.rollback()
             print("Failed inserting record into mobile table {}".format(error))
 
         finally:
@@ -72,6 +73,7 @@ class PostgresDAO(DAO):
             print(cursor.rowcount, "Record inserted successfully into mobile table")
 
         except (Exception, psycopg2.Error) as error:
+            self.db.rollback()
             print("Failed inserting record into mobile table {}".format(error))
 
         finally:
@@ -98,6 +100,7 @@ class PostgresDAO(DAO):
             print(cursor.rowcount, "Record inserted successfully into mobile table")
 
         except (Exception, psycopg2.Error) as error:
+            self.db.rollback()
             print("Failed inserting record into mobile table {}".format(error))
 
         finally:
@@ -105,7 +108,7 @@ class PostgresDAO(DAO):
             if self.db:
                 cursor.close()
                 self.db.close()
-                # print("PostgreSQL self.db is closed")
+                print("PostgreSQL self.db is closed")
 
     def get_filtered_lemmas(self):
 
@@ -122,10 +125,10 @@ class PostgresDAO(DAO):
 
             cursor.execute(sql_insert_query)
             records = cursor.fetchall()
-
             self.db.commit()
 
         except (Exception, psycopg2.Error) as error:
+            self.db.rollback()
             print("Failed selecting record into mobile table {}".format(error))
 
         finally:
@@ -137,6 +140,9 @@ class PostgresDAO(DAO):
         return records
 
     def refresh_materialized_view(self):
+
+        cursor = None
+
         try:
             cursor = self.db.cursor()
 
@@ -149,6 +155,7 @@ class PostgresDAO(DAO):
             print("materialized view refreshed")
 
         except (Exception, psycopg2.Error) as error:
+            self.db.rollback()
             print("refreshing failed".format(error))
 
         finally:
@@ -156,4 +163,92 @@ class PostgresDAO(DAO):
             if self.db:
                 cursor.close()
                 self.db.close()
+                print("PostgreSQL self.db is closed")
+
+    def update_frequency_on_resources(self, rows):
+
+        try:
+            cursor = self.db.cursor()
+
+            sql_insert_query = """
+                   UPDATE words
+                   SET tweet_freq = %s
+                   WHERE word = %s AND sentiment = %s
+                   """
+
+            cursor.executemany(sql_insert_query, rows)
+            self.db.commit()
+            print("frequencies updated")
+
+        except (Exception, psycopg2.Error) as error:
+            self.db.rollback()
+            print("update frequency filed".format(error))
+
+        finally:
+            # closing database self.db.
+            if self.db:
+                cursor.close()
+                self.db.close()
                 # print("PostgreSQL self.db is closed")
+
+    def get_words(self):
+
+        records = []
+
+        try:
+
+            cursor = self.db.cursor()
+
+            sql_insert_query = """
+                   SELECT *
+                   FROM words
+                   """
+
+            cursor.execute(sql_insert_query)
+            records = cursor.fetchall()
+            self.db.commit()
+            print("record seleccted")
+
+        except (Exception, psycopg2.Error) as error:
+            self.db.rollback()
+            print("select failed".format(error))
+
+        finally:
+            # closing database self.db.
+            if self.db:
+                cursor.close()
+                self.db.close()
+                return records
+                print("PostgreSQL self.db is closed")
+
+    def add_word(self, rows):
+        try:
+            cursor = self.db.cursor()
+
+            sql_insert_query = """ INSERT INTO words (word, sentiment, resource, occurences, tweet_freq) 
+                                   VALUES (%(word)s, %(sentiment)s, 'new', 0, %(tweet_freq)s)
+                                   """
+            """
+                                   ON CONFLICT (word, sentiment, resource) DO UPDATE 
+                                   SET occurences = words.occurences + 1 
+                                   WHERE 1 = 1
+                                   AND words.word = %(word)s
+                                   AND words.sentiment = %(sentiment)s
+                                   AND words.resource = %(resource)s
+                                    """
+
+            # executemany() to insert multiple rows rows
+            cursor.executemany(sql_insert_query, rows)
+            self.db.commit()
+            print(cursor.rowcount, "new word inserted successfully into mobile table")
+
+        except (Exception, psycopg2.Error) as error:
+            self.db.rollback()
+            print("Failed inserting record into mobile table {}".format(error))
+
+        finally:
+            # closing database self.db.
+            if self.db:
+                cursor.close()
+                self.db.close()
+                print("PostgreSQL self.db is closed")

@@ -5,6 +5,7 @@ CREATE TABLE words (
     sentiment varchar,
     resource varchar,
     occurences int,
+    tweet_freq int,
     PRIMARY KEY (word, sentiment, resource)
 );
 
