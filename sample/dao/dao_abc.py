@@ -23,7 +23,7 @@ class DAO(ABC):
         pass
 
     @abstractmethod
-    def update_frequency_on_resources(self, word, sentiment, frequency):
+    def update_frequency_on_resources(self, rows):
         pass
 
     @abstractmethod
@@ -34,3 +34,5 @@ class DAO(ABC):
     def get_words(self):
         pass
 
+    def get_tweets(self):
+        pass

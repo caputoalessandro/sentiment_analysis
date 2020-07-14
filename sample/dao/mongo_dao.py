@@ -64,7 +64,7 @@ class MongoDAO(DAO):
             self.db.close()
             print("INSERIMENTO FALLITO")
 
-    def _count_tweet_lemmas_frequencies(self):
+    def count_tweet_lemmas_frequencies(self):
 
         for sentiment in self.sentiments:
             self._map_reduce(sentiment)
@@ -104,5 +104,39 @@ class MongoDAO(DAO):
             aggregate  = collection.find({}).sort('value', -1).limit(40)
             frequencies.setdefault(sentiment)
             frequencies[sentiment] = list(aggregate)
+        self.db.close()
+        return frequencies
 
+    def update_frequency_on_resources(self, row):
+
+        collection = self.db.maadb_project[f"{row['sentiment']}_freqs"]
+        query = {"word": row["word"], "sentiment": row["sentiment"]}
+        values = {"$set": {"tweet_freq": row["tweet_freq"]}}
+        if not collection.update_one(query, values):
+            print("UPDATE FAILED")
+            self.db.close()
+        print("frequency updated")
+        self.db.close()
+
+    def add_word(self, rows):
+        collection = self.db.maadb_project.words
+        if collection.insert_one(rows):
+            print("Word Documents inserted successfully")
+            self.db.close()
+        else:
+            self.db.close()
+            print("INSERIMENTO FALLITO")
+
+    def get_words(self):
+        collection = self.db.maadb_project.words
+        return list(collection.find({}))
+
+    def get_tweets(self):
+        frequencies = {}
+        for sentiment in self.sentiments:
+            collection = self.db.maadb_project[f"{sentiment}_freqs"]
+            aggregate = collection.find({}).sort('value', -1)
+            frequencies.setdefault(sentiment)
+            frequencies[sentiment] = list(aggregate)
+        self.db.close()
         return frequencies
