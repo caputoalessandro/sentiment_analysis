@@ -28,7 +28,7 @@ class Resources:
         return [
             {
                 "word": word,
-                "sentiment": sentiment.name,
+                "sentiment": sentiment.name.lower(),
                 "resource": resource.stem,
             }
             for sentiment in self.path.iterdir()

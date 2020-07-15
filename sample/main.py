@@ -5,6 +5,7 @@ from sample.dao.get_dao import get_db
 from sample.word_clouds import make_all_word_clouds
 from sample.update_resources_postgres import update_resources_postgres
 from sample.update_resources_mongo import update_resources_mongo
+from sample.stats.stats import postgres_calculate_percentage
 
 POSTGRES = "postgres"
 MONGO_DB = "mongo"
@@ -13,7 +14,7 @@ MONGO_DB = "mongo"
 def main():
 
     """ Process tweets """
-    processed_tweets = process_tweets()
+    # processed_tweets = process_tweets()
 
     """ Upload resources on Postgres """
     # create_tables()
@@ -26,13 +27,13 @@ def main():
     # pg.refresh_materialized_view()
 
     """ Upload resources on Mongo DB """
-    mongo_upload_resources()
-
-    mongo = get_db(MONGO_DB)
-    mongo.upload_tweets(processed_tweets)
-
-    mongo = get_db(MONGO_DB)
-    mongo.count_tweet_lemmas_frequencies()
+    # mongo_upload_resources()
+    #
+    # mongo = get_db(MONGO_DB)
+    # mongo.upload_tweets(processed_tweets)
+    #
+    # mongo = get_db(MONGO_DB)
+    # mongo.count_tweet_lemmas_frequencies()
 
     """ update frequencies and add new words """
     # update_resources_postgres()
@@ -43,10 +44,13 @@ def main():
     # postgres_filtered = pg.get_filtered_lemmas()
     # make_all_word_clouds(postgres_filtered, POSTGRES)
 
-    """ Make word clouds on Mongo DB"""
+    """ Make word clouds on Mongo DB """
     # mongo = get_db(MONGO_DB)
     # mongo_filtered = mongo.get_filtered_lemmas()
     # make_all_word_clouds(mongo_filtered, MONGO_DB)
+
+    """ Make Stats """
+    postgres_calculate_percentage()
 
     return 0
 
