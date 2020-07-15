@@ -34,9 +34,9 @@ def main():
     mongo = get_db(MONGO_DB)
     mongo.count_tweet_lemmas_frequencies()
 
-    """ update frequency and add new word """
+    """ update frequencies and add new words """
     # update_resources_postgres()
-    update_resources_mongo()
+    # update_resources_mongo()
 
     """ Make wordclouds on postgres """
     # pg = get_db(POSTGRES)

@@ -19,6 +19,7 @@ def update_resources_postgres():
 
         twitters_lemmas_counts = {x[1]: x[2] for x in twitter_lemmas if x[0] == sentiment}
         twitter_word_in_resources = [item for item in resources_words if word == item[0] and sentiment == item[1]]
+
         if twitter_word_in_resources:
             update.append((
                 twitters_lemmas_counts[word],
@@ -34,9 +35,9 @@ def update_resources_postgres():
                 "tweet_freq": twitters_lemmas_counts[word]
             })
 
-        db = get_db(DB)
-        db.update_frequency_on_resources(update)
+    db = get_db(DB)
+    db.update_frequency_on_resources(update)
 
-        db = get_db(DB)
-        db.add_word(add)
+    db = get_db(DB)
+    db.add_word(add)
 

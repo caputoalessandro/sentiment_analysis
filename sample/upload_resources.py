@@ -22,11 +22,11 @@ def postgres_upload_resources():
     postg = get_db(POTGRES)
     postg.upload_words(lexical_resources)
 
-    postg = get_db(POTGRES)
-    postg.upload_words_values(conscore_resources, CONSCORE)
-
-    postg = get_db(POTGRES)
-    postg.upload_words_values(posneg_resources, POSNEG)
+    # postg = get_db(POTGRES)
+    # postg.upload_words_values(conscore_resources, CONSCORE)
+    #
+    # postg = get_db(POTGRES)
+    # postg.upload_words_values(posneg_resources, POSNEG)
 
 
 def mongo_upload_resources():

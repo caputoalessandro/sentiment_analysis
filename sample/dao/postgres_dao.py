@@ -178,7 +178,7 @@ class PostgresDAO(DAO):
 
             cursor.executemany(sql_insert_query, rows)
             self.db.commit()
-            print("frequencies updated")
+            print(len(rows), "frequencies updated")
 
         except (Exception, psycopg2.Error) as error:
             self.db.rollback()
@@ -218,8 +218,8 @@ class PostgresDAO(DAO):
             if self.db:
                 cursor.close()
                 self.db.close()
-                return records
                 print("PostgreSQL self.db is closed")
+        return records
 
     def add_word(self, rows):
         try:
@@ -228,14 +228,6 @@ class PostgresDAO(DAO):
             sql_insert_query = """ INSERT INTO words (word, sentiment, resource, occurences, tweet_freq) 
                                    VALUES (%(word)s, %(sentiment)s, 'new', 0, %(tweet_freq)s)
                                    """
-            """
-                                   ON CONFLICT (word, sentiment, resource) DO UPDATE 
-                                   SET occurences = words.occurences + 1 
-                                   WHERE 1 = 1
-                                   AND words.word = %(word)s
-                                   AND words.sentiment = %(sentiment)s
-                                   AND words.resource = %(resource)s
-                                    """
 
             # executemany() to insert multiple rows rows
             cursor.executemany(sql_insert_query, rows)

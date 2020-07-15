@@ -6,7 +6,8 @@ from dataclasses import dataclass, field, asdict
 from typing import List
 from sample.processing.ideogram_classifier import ideogram_classifier
 from sample.processing.slang_to_tokens import slang_to_tokens_map
-from nltk.stem import PorterStemmer
+# from nltk.stem import PorterStemmer
+from nltk.stem import WordNetLemmatizer
 import emot
 import re
 
@@ -45,8 +46,11 @@ class TwitterProcessor:
     def __init__(self):
         self.tagger = PerceptronTagger()
         self.tokenizer = TweetTokenizer()
-        self.stemmer = PorterStemmer()
+        # self.stemmer = PorterStemmer()
         self.slang_to_tokens = slang_to_tokens_map()
+        self.lemmatizer = WordNetLemmatizer()
+        # see https://stackoverflow.com/questions/27433370
+        self.lemmatizer.lemmatize("hello")
 
     def process_tweet(self, message, sentiment):
 
@@ -56,7 +60,8 @@ class TwitterProcessor:
         tokens = self.tokenizer.tokenize(message)
         tokens = self._expand_slang(tokens)
         tagged_tokens = self.tagger.tag(tokens)
-        stemmer = self.stemmer
+        # stemmer = self.stemmer
+        lemmatizer = self.lemmatizer
 
         ideograms = self._find_ideograms(message)
 
@@ -68,11 +73,22 @@ class TwitterProcessor:
             elif HASHTAG_RE.fullmatch(token):
                 hashtags.append(token)
 
+            # elif pos[0] in TAGS_CONVERSIONS:
+            #     theme = stemmer.stem(token)
+            #     if theme in STOPWORDS or not WORD_RE.fullmatch(theme):
+            #         continue
+            #     themes.append(theme)
+
             elif pos[0] in TAGS_CONVERSIONS:
-                theme = stemmer.stem(token)
-                if theme in STOPWORDS or not WORD_RE.fullmatch(theme):
+                lemmatized = lemmatizer.lemmatize(
+                    token, TAGS_CONVERSIONS[pos[0]]
+                )
+                if lemmatized in STOPWORDS or not WORD_RE.fullmatch(
+                        lemmatized
+                ):
                     continue
-                themes.append(theme)
+                themes.append(lemmatized)
+
 
         return TweetData(
             message, sentiment, themes, hashtags, **ideograms
