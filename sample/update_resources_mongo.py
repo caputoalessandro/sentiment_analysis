@@ -29,7 +29,6 @@ def update_resources_mongo():
             }
 
             if twitter_word_in_resources:
-                print("è SUCCESSO")
                 db = get_db(DB)
                 db.update_frequency_on_resources(update)
 
@@ -38,7 +37,7 @@ def update_resources_mongo():
                 db = get_db(DB)
                 db.add_word(update)
 
-
+    return 0
 
 
 

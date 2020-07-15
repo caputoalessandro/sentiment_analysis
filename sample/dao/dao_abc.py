@@ -19,7 +19,7 @@ class DAO(ABC):
         pass
 
     @abstractmethod
-    def get_filtered_lemmas(self):
+    def get_filtered_lemmas(self, n):
         pass
 
     @abstractmethod

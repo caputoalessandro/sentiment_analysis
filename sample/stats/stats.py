@@ -13,6 +13,8 @@ sentiments = [
         "trust"
     ]
 
+INF = 600000000
+
 
 def make_plot(sentiment, words, values):
 
@@ -29,14 +31,32 @@ def make_plot(sentiment, words, values):
     ax.set_xlabel('Percentage %')
     ax.set_title(sentiment)
 
-    plt.show()
+    return plt.show()
 
 
-def mongo_calculate_percentage(n):
-    db = get_db("mongo")
+def make_plots(stats: dict, n):
+
+    w = []
+    v = []
+
+    for sentiment, words in stats.items():
+        w.clear()
+        v.clear()
+
+        for word, value in words[:n]:
+            w.append(word)
+            v.append(value)
+
+        make_plot(sentiment, w, v)
+
+    return 0
+
+
+def postgres_calculate_percentage(n):
+    db = get_db("postgres")
     twitter_lemmas = db.get_filtered_lemmas()
 
-    db = get_db("mongo")
+    db = get_db("postgres")
     resources_words = db.get_words()
 
     lemmas_number = {
@@ -59,24 +79,28 @@ def mongo_calculate_percentage(n):
         for sentiment in sentiments
     }
 
-    for sentiment, words in stats.items():
-        w = []
-        v = []
-
-        for word, value in words[:n]:
-            w.append(word)
-            v.append(value)
-
-        make_plot(sentiment, w, v)
-
-    return 0
+    return make_plots(stats, n)
 
 
-def mongo_calculate_percentage():
+def mongo_calculate_percentage(n):
     db = get_db("mongo")
-    twitter_lemmas = db.get_filtered_lemmas()
+    twitter_lemmas = db.get_filtered_lemmas(INF)
 
     db = get_db("mongo")
     resources_words = db.get_words()
 
-    breakpoint()
+    stats = {}
+
+    for sentiment in sentiments:
+        for row in resources_words:
+            if "tweet_freq" not in row:
+                continue
+            elif "tweet_freq" in row and sentiment == row["sentiment"]:
+                stats.setdefault(sentiment, [])
+                stats[sentiment].append(
+                    (row["word"], row["tweet_freq"] / len(twitter_lemmas[sentiment]) * 100)
+                )
+
+    return make_plots(stats, n)
+
+

@@ -7,7 +7,7 @@ DB = "postgres"
 def update_resources_postgres():
 
     db = get_db(DB)
-    twitter_lemmas = db.get_filtered_lemmas()
+    twitter_lemmas = db.get_filtered_lemmas('inf')
 
     db = get_db(DB)
     resources_words = db.get_words()

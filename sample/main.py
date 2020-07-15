@@ -5,7 +5,7 @@ from sample.dao.get_dao import get_db
 from sample.word_clouds import make_all_word_clouds
 from sample.update_resources_postgres import update_resources_postgres
 from sample.update_resources_mongo import update_resources_mongo
-from sample.stats.stats import postgres_calculate_percentage
+from sample.stats.stats import postgres_calculate_percentage, mongo_calculate_percentage
 
 POSTGRES = "postgres"
 MONGO_DB = "mongo"
@@ -31,13 +31,13 @@ def main():
     #
     # mongo = get_db(MONGO_DB)
     # mongo.upload_tweets(processed_tweets)
-    #
+
     # mongo = get_db(MONGO_DB)
     # mongo.count_tweet_lemmas_frequencies()
 
     """ update frequencies and add new words """
     # update_resources_postgres()
-    # update_resources_mongo()
+    update_resources_mongo()
 
     """ Make wordclouds on postgres """
     # pg = get_db(POSTGRES)
@@ -50,7 +50,8 @@ def main():
     # make_all_word_clouds(mongo_filtered, MONGO_DB)
 
     """ Make Stats """
-    postgres_calculate_percentage()
+    # postgres_calculate_percentage(5)
+    mongo_calculate_percentage(5)
 
     return 0
 
