@@ -104,7 +104,6 @@ class MongoDAO(DAO):
 
         return res
 
-
     def get_filtered_lemmas(self,n):
         frequencies = {}
         for sentiment in self.sentiments:
@@ -128,8 +127,8 @@ class MongoDAO(DAO):
 
     def add_word(self, rows):
         collection = self.db.maadb_project.words
-        if collection.insert_one(rows):
-            print("Word Documents inserted successfully")
+        if collection.insert_many(rows):
+            print(len(rows),"Word Documents inserted successfully")
             self.db.close()
         else:
             self.db.close()
@@ -150,3 +149,40 @@ class MongoDAO(DAO):
             frequencies[sentiment] = list(aggregate)
         self.db.close()
         return frequencies
+
+    def get_emojis(self):
+        collection = self.db.maadb_project.tweets
+        res = list(collection.find({}, {"emoji_pos": 1}))
+        self.db.close()
+        return res
+
+    def get_emoticons(self):
+        collection = self.db.maadb_project.tweets
+        res = list(collection.find({}).projection({"emoticon_pos": 1, "emoticon_neg": 1, "_id": 0}))
+        self.db.close()
+        return res
+
+    def tweet_word_freqs(self, sentiment):
+        words = list(self.db.maadb_project.words.find({"sentiment": sentiment}))
+        words = [word["word"] for word in words]
+        freqs = (
+                list(self.db.maadb_project[f"{sentiment}_freqs"]
+                .find({"_id": {"$in": words}}))
+
+        )
+        res = list(freqs)
+        self.db.close()
+        return res
+
+    def get_resources_word_counts(self, sentiment: str):
+        words = list(self.db.maadb_project.words.find({"sentiment": sentiment}))
+        words = [word["word"] for word in words]
+        freqs = (
+            list(self.db.maadb_project[f"{sentiment}_freqs"]
+            .find({"_id": {"$in": words}}))
+        )
+
+        return freqs
+
+    def count(self, sentiment):
+        return self.db.maadb_project[f"{sentiment}_freqs"].count()

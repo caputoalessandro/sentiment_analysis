@@ -110,7 +110,7 @@ class PostgresDAO(DAO):
                 self.db.close()
                 print("PostgreSQL self.db is closed")
 
-    def get_filtered_lemmas(self):
+    def get_filtered_lemmas(self, n):
 
         records = None
 
@@ -226,7 +226,7 @@ class PostgresDAO(DAO):
             cursor = self.db.cursor()
 
             sql_insert_query = """ INSERT INTO words (word, sentiment, resource, occurences, tweet_freq) 
-                                   VALUES (%(word)s, %(sentiment)s, 'new', 0, %(tweet_freq)s)
+                                   VALUES (%(word)s, %(sentiment)s, 'new', 0, %(freq)s)
                                    """
 
             # executemany() to insert multiple rows rows
@@ -244,3 +244,130 @@ class PostgresDAO(DAO):
                 cursor.close()
                 self.db.close()
                 print("PostgreSQL self.db is closed")
+
+    def get_emojis(self):
+        records = []
+
+        try:
+
+            cursor = self.db.cursor()
+
+            sql_insert_query = """
+                           SELECT emoji_pos,emoji_neg,emoji_other
+                           FROM tweets
+                           """
+
+            cursor.execute(sql_insert_query)
+            records = cursor.fetchall()
+            self.db.commit()
+            print("record seleccted")
+
+        except (Exception, psycopg2.Error) as error:
+            self.db.rollback()
+            print("select failed".format(error))
+
+        finally:
+            # closing database self.db.
+            if self.db:
+                cursor.close()
+                self.db.close()
+                print("PostgreSQL self.db is closed")
+        return records
+
+    def get_emoticons(self):
+        records = []
+
+        try:
+
+            cursor = self.db.cursor()
+
+            sql_insert_query = """
+                           SELECT emoticon_pos, emoticon_neg
+                           FROM tweets
+                           """
+
+            cursor.execute(sql_insert_query)
+            records = cursor.fetchall()
+            self.db.commit()
+            print("record seleccted")
+
+        except (Exception, psycopg2.Error) as error:
+            self.db.rollback()
+            print("select failed".format(error))
+
+        finally:
+            # closing database self.db.
+            if self.db:
+                cursor.close()
+                self.db.close()
+                print("PostgreSQL self.db is closed")
+        return records
+
+    def get_tweets(self):
+        pass
+
+    def tweet_word_freqs(self, sentiment):
+        records = []
+
+        try:
+
+            cursor = self.db.cursor()
+
+            sql_insert_query = """
+                SELECT DISTINCT lemma, lemma_count
+                        FROM tweet_word_frequencies freqs, words
+                        WHERE TRUE
+                        AND freqs.sentiment = %s
+                        AND words.sentiment = freqs.sentiment
+                        AND words.word = freqs.lemma
+                        ORDER BY lemma_count DESC
+            """
+
+            cursor.execute(sql_insert_query, (sentiment,))
+            records = cursor.fetchall()
+            self.db.commit()
+            print("record seleccted")
+
+        except (Exception, psycopg2.Error) as error:
+            self.db.rollback()
+            print("select failed".format(error))
+
+        finally:
+            # closing database self.db.
+            if self.db:
+                cursor.close()
+                self.db.close()
+                print("PostgreSQL self.db is closed")
+        return records
+
+    def count(self):
+
+        try:
+
+            cursor = self.db.cursor()
+
+            sql_insert_query = """
+                       SELECT 
+                       COUNT (*)
+                       FROM tweet_word_frequencies
+                   """
+
+            cursor.execute(sql_insert_query)
+            n = cursor.fetch()
+            self.db.commit()
+            print("record seleccted")
+
+        except (Exception, psycopg2.Error) as error:
+            self.db.rollback()
+            print("select failed".format(error))
+
+        finally:
+            # closing database self.db.
+            if self.db:
+                cursor.close()
+                self.db.close()
+                print("PostgreSQL self.db is closed")
+        return n
+
+
+

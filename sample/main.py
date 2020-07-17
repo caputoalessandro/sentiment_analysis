@@ -3,9 +3,9 @@ from sample.upload_resources import postgres_upload_resources, mongo_upload_reso
 from sample.process_tweets import process_tweets
 from sample.dao.get_dao import get_db
 from sample.word_clouds import make_all_word_clouds
-from sample.update_resources_postgres import update_resources_postgres
-from sample.update_resources_mongo import update_resources_mongo
-from sample.stats.stats import postgres_calculate_percentage, mongo_calculate_percentage
+from sample.add_new_words import add_new_words
+from sample.stats.stats import stats
+
 
 POSTGRES = "postgres"
 MONGO_DB = "mongo"
@@ -13,10 +13,10 @@ MONGO_DB = "mongo"
 
 def main():
 
-    """ Process tweets """
+    # """ Process tweets """
     # processed_tweets = process_tweets()
-
-    """ Upload resources on Postgres """
+    #
+    # """ Upload resources on Postgres """
     # create_tables()
     # postgres_upload_resources()
     #
@@ -25,33 +25,34 @@ def main():
     #
     # pg = get_db(POSTGRES)
     # pg.refresh_materialized_view()
-
-    """ Upload resources on Mongo DB """
+    #
+    # """ Upload resources on Mongo DB """
     # mongo_upload_resources()
     #
     # mongo = get_db(MONGO_DB)
     # mongo.upload_tweets(processed_tweets)
-
+    #
     # mongo = get_db(MONGO_DB)
     # mongo.count_tweet_lemmas_frequencies()
-
-    """ update frequencies and add new words """
-    # update_resources_postgres()
-    update_resources_mongo()
+    #
+    # """Add new words postgres """
+    # add_new_words(POSTGRES)
+    #
+    # """Add new word mongo"""
+    # add_new_words(MONGO_DB)
 
     """ Make wordclouds on postgres """
     # pg = get_db(POSTGRES)
-    # postgres_filtered = pg.get_filtered_lemmas()
+    # postgres_filtered = pg.get_filtered_lemmas(50)
     # make_all_word_clouds(postgres_filtered, POSTGRES)
 
     """ Make word clouds on Mongo DB """
     # mongo = get_db(MONGO_DB)
-    # mongo_filtered = mongo.get_filtered_lemmas()
+    # mongo_filtered = mongo.get_filtered_lemmas(60)
     # make_all_word_clouds(mongo_filtered, MONGO_DB)
 
     """ Make Stats """
-    # postgres_calculate_percentage(5)
-    mongo_calculate_percentage(5)
+    stats()
 
     return 0
 

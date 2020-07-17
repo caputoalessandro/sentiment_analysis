@@ -2,7 +2,7 @@ from sample.processing.twitter_processor import TwitterProcessor
 from pathlib import Path,PurePath
 
 
-def process_tweets(directory="/home/sinopeta/Google_Drive/Pycharm Projects/MAADB/sentiment_analysis/data/input/messages-prova"):
+def process_tweets(directory="/home/sinopeta/Google_Drive/Pycharm Projects/MAADB/sentiment_analysis/data/input/messages"):
 
     directory = Path(directory)
     processor = TwitterProcessor()

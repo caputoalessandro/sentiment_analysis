@@ -10,6 +10,7 @@ from sample.processing.slang_to_tokens import slang_to_tokens_map
 from nltk.stem import WordNetLemmatizer
 import emot
 import re
+import emoji
 
 
 STOPWORDS = set(stopwords.words("english"))
@@ -104,11 +105,13 @@ class TwitterProcessor:
             for ideogram in emojis["value"]:
                 classification = ideogram_classifier(ideogram)
                 if classification:
+
                     emojis_dict.setdefault(classification, []).append(ideogram)
 
         for token in message.split():
             classification = ideogram_classifier(token)
             if classification:
+
                 emoticon_dict.setdefault(classification, []).append(token)
 
         return dict(emoticon_dict, **emojis_dict)

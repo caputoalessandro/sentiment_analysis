@@ -30,13 +30,9 @@ def make_all_word_clouds(filtered_words, db):
             words[sentiment][word] = value
 
         for sentiment, lemmas in words.items():
-            rows = take(40, lemmas.items())
+            rows = take(60, lemmas.items())
             result[sentiment] = dict(rows)
 
     for sentiment in result:
-        make_wordcloud(result[sentiment])
+        make_wordcloud(result[sentiment], sentiment)
 
-
-
-if __name__ == "__main__":
-    make_all_word_clouds()

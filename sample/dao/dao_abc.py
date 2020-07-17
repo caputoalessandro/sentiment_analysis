@@ -34,5 +34,22 @@ class DAO(ABC):
     def get_words(self):
         pass
 
+    @abstractmethod
     def get_tweets(self):
+        pass
+
+    @abstractmethod
+    def get_emojis(self):
+        pass
+
+    @abstractmethod
+    def get_emoticons(self):
+        pass
+
+    @abstractmethod
+    def tweet_word_freqs(self, sentiment):
+        pass
+
+    @abstractmethod
+    def count(self,sentiment):
         pass

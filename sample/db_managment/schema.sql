@@ -23,7 +23,7 @@ CREATE TABLE  scores (
 
 
 DROP TABLE IF EXISTS tweets CASCADE;
-CREATE TABLE tweets (
+CREATE TABLE tweets  (
     id SERIAL PRIMARY KEY,
     text VARCHAR,
     sentiment VARCHAR,
@@ -37,6 +37,7 @@ CREATE TABLE tweets (
 );
 
 
+
 DROP MATERIALIZED VIEW IF EXISTS tweet_word_frequencies;
 CREATE MATERIALIZED VIEW tweet_word_frequencies
 AS
@@ -44,6 +45,6 @@ AS
     FROM tweets, LATERAL unnest(lemmas) as lemma
     GROUP BY sentiment, lemma
     ORDER BY lemma_count DESC
-WITH NO DATA;
+WITH NO DATA ;
 
 -- REFRESH MATERIALIZED VIEW tweet_word_frequencies;
